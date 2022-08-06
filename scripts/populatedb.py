@@ -21,8 +21,10 @@ def check_hex_value(hex: str):
     return hex
 
 
-for i in range(0, 192):
-    for j in range(0, 192):
+# 40 1 191
+# 51 100 191
+for i in range(51, 192):
+    for j in range(101, 192):
         for k in range(0, 192):
             r = check_hex_value(hex(i)[2:])
             g = check_hex_value(hex(j)[2:])

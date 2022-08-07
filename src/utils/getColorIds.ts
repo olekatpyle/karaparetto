@@ -1,4 +1,4 @@
-const MAX_ID = 3704547;
+const MAX_ID = 768;
 
 export const getRandomId: (colorIds: number[]) => number = (colorIds) => {
   const id: number = Math.floor(Math.random() * MAX_ID);

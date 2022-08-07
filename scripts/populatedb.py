@@ -40,7 +40,7 @@ for i in range(0, 256):
             r = check_hex_value(hex(i)[2:])
             g = check_hex_value(hex(j)[2:])
             b = check_hex_value(hex(k)[2:])
-            val = f"#{r+g+b}"
+            val = f"{r+g+b}"
             data = (val, i, j, k)
             print(val)
             cursor.execute(ins_val, data)

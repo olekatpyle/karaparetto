@@ -12,9 +12,9 @@ datasource db {
 }
 
 model Color {
-  id    Int    @id @default(autoincrement())
+  id  Int    @id @default(autoincrement())
   hex String @unique
-  r     Int
-  g     Int
-  b     Int
+  r   Int
+  g   Int
+  b   Int
 }

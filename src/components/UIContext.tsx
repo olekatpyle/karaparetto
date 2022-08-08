@@ -1,8 +1,19 @@
 import { trpc } from '@/utils/trpc';
 import { useState } from 'react';
-import { Color, Navbar, Dropbar, defaultTheme } from '.';
+import { Navbar } from './Navbar';
+import { Dropbar } from './Dropbar';
+import { Color } from './Color';
 
-export default function UIContext() {
+export const defaultTheme: Theme = {
+  primary: '222222',
+  secondary: 'e8e8e8',
+  bg: 'ffffff',
+  accent1: 'f75fff',
+  accent2: '009966',
+  default: 'e8e8e8',
+};
+
+export function UIContext() {
   const [palette, setPalette] = useState([]);
   const [theme, setTheme] = useState(defaultTheme);
 
@@ -54,3 +65,5 @@ export default function UIContext() {
     </div>
   );
 }
+
+export default UIContext;

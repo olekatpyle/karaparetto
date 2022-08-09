@@ -4,7 +4,7 @@ import type { AppProps } from 'next/app';
 import { withTRPC } from '@trpc/next';
 import type { AppRouter } from '@/backend/router';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
 
@@ -14,6 +14,7 @@ function getBaseUrl() {
 
   return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 }
+
 export default withTRPC<AppRouter>({
   config({ ctx }) {
     /**
@@ -34,4 +35,4 @@ export default withTRPC<AppRouter>({
    * @link https://trpc.io/docs/ssr
    */
   ssr: false,
-})(MyApp);
+})(App);

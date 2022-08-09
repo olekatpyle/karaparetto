@@ -1,21 +1,14 @@
 import { trpc } from '@/utils/trpc';
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { selectTheme } from '@/redux/store';
 import { Navbar } from './Navbar';
 import { Dropbar } from './Dropbar';
-import { Color } from './Color';
-
-export const defaultTheme: Theme = {
-  primary: '222222',
-  secondary: 'e8e8e8',
-  bg: 'ffffff',
-  accent1: 'f75fff',
-  accent2: '009966',
-  default: 'e8e8e8',
-};
+import { ColorField } from './ColorField';
 
 export function UIContext() {
   const [palette, setPalette] = useState([]);
-  const [theme, setTheme] = useState(defaultTheme);
+  const theme = useSelector(selectTheme);
 
   const { refetch } = trpc.useQuery(['get-color-palette'], {
     refetchInterval: false,
@@ -26,15 +19,12 @@ export function UIContext() {
 
   return (
     <div
-      className=""
+      className="relative"
       style={{ backgroundColor: '#' + theme.bg }}
     >
       <Navbar theme={theme} />
-      <Dropbar
-        theme={theme}
-        applyTheme={setTheme}
-      />
-      <div className="grid grid-flow-row">
+      <Dropbar />
+      <div className="grid grid-flow-row h-full">
         <div className="p-3"></div>
         <div
           className="text-4xl flex items-center justify-center"
@@ -46,7 +36,7 @@ export function UIContext() {
         <div className="mx-28 grid grid-cols-4 gap-6  place-items-center ">
           {palette &&
             palette.map((val, key) => (
-              <Color
+              <ColorField
                 key={key}
                 bg={val.hex}
               />

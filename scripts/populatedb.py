@@ -38,8 +38,8 @@ try:
     version = cursor.fetchone()
     if version:
         print("Running version: ", version)
-        for i in range(15, 128):
-            for j in range(161, 256):
+        for i in range(82, 128):
+            for j in range(233, 256):
                 for k in range(0, 256):
                     r = check_hex_value(hex(i)[2:])
                     g = check_hex_value(hex(j)[2:])

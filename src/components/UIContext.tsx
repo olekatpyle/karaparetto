@@ -1,14 +1,21 @@
 import { trpc } from '@/utils/trpc';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTheme } from '@/redux/store';
-import { Navbar } from './Navbar';
-import { Dropbar } from './Dropbar';
-import { ColorField } from './ColorField';
+import { selectTheme, selectScale, selectAuto } from '@/redux/store';
+// import { resetDefault } from '@/redux/reducer/themeSlice';
+import {
+  Menubar,
+  Preview,
+  Dropbar,
+  ColorField,
+  ControlPanel,
+} from '@/components';
 
 export function UIContext() {
   const [palette, setPalette] = useState([]);
   const theme = useSelector(selectTheme);
+  const scale = useSelector(selectScale);
+  const auto = useSelector(selectAuto);
 
   const { refetch } = trpc.useQuery(['get-color-palette'], {
     refetchInterval: false,
@@ -19,39 +26,39 @@ export function UIContext() {
 
   return (
     <div
-      className="relative"
+      className="static h-screen"
       style={{ backgroundColor: '#' + theme.bg }}
     >
-      <Navbar theme={theme} />
+      <Menubar />
+      <Preview />
       <Dropbar />
-      <div className="grid grid-flow-row h-full">
-        <div className="p-3"></div>
+      <div className="pt-4"></div>
+      <div
+        className="m-auto text-5xl flex text-center justify-center"
+        style={{ color: '#' + theme.primary }}
+      >
+        KARAPARETTO
+      </div>
+      <div className="pt-4 "></div>
+      <div className="grid grid-flow-row">
         <div
-          className="text-4xl flex items-center justify-center"
-          style={{ color: '#' + theme.primary }}
+          className="mx-auto grid gap-2  place-items-center h-max"
+          style={{
+            gridTemplateColumns: auto,
+          }}
         >
-          KARAPARETTO
-        </div>
-        <div className="p-5"></div>
-        <div className="mx-28 grid grid-cols-4 gap-6  place-items-center ">
           {palette &&
-            palette.map((val, key) => (
+            palette.slice(0, +scale).map((val, key) => (
               <ColorField
                 key={key}
                 bg={val.hex}
+                scale={scale}
+                border={val.hex}
               />
             ))}
         </div>
-        <div className="p-8"></div>
-        <div className="flex items-center justify-center">
-          <button
-            className="text-2xl text-white bg-gray-500 px-6 py-3 rounded-lg"
-            onClick={() => refetch()}
-          >
-            Shuffle
-          </button>
-        </div>
       </div>
+      <ControlPanel refetch={refetch} />
     </div>
   );
 }

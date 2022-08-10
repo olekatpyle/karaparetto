@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { selectTheme, selectDefaultTheme } from '@/redux/store';
-import { applyColor } from '@/redux/reducer/themeSlice';
+import {
+  selectTheme,
+  selectDefaultTheme,
+  selectDropFieldBgs,
+} from '@/redux/store';
+import { applyColor, setDropFieldBg } from '@/redux/reducer/uiSlice';
 
 export const Dropbar: React.FC<{}> = () => {
   return (
-    <div className={`w-1/4 h-screen sticky float-right border-l border-black `}>
-      <div className="p-9"></div>
+    <div className={`w-1/4 sticky float-right`}>
+      <div className="p-6"></div>
       <div className="grid grid-cols-2 gap-2 place-items-center mx-16">
         <DropColor id={'primary'} />
         <DropLabel label={'PRIMARY COLOR'} />
@@ -29,7 +33,7 @@ export const DropColor: React.FC<{
   const defaultTheme = useSelector(selectDefaultTheme);
   const theme = useSelector(selectTheme);
   const dispatch = useDispatch();
-  const [color, setColor] = useState('e8e8e8');
+  const dropFields = useSelector(selectDropFieldBgs);
   const [colorDropped, setColorDropped] = useState(false);
 
   const onDragOver = (event) => {
@@ -39,35 +43,35 @@ export const DropColor: React.FC<{
   const onDrop = (event) => {
     let c = event.dataTransfer.getData('color');
     setColorDropped(true);
-    setColor(c);
+    dispatch(setDropFieldBg({ key: props.id, color: c }));
     dispatch(applyColor({ key: props.id, color: c }));
   };
 
   const onClickRemoveColor = (event) => {
     setColorDropped(false);
+    dispatch(setDropFieldBg({ key: props.id, color: 'e8e8e8' }));
     dispatch(applyColor({ key: props.id, color: defaultTheme[props.id] }));
-    setColor('e8e8e8');
   };
 
   return (
     <div className="relative group">
       <div
         className="flex box-content items-center rounded-lg w-36 h-36 border border-white text-2xl text-transparent justify-center transition ease-in-out delay-25 hover:text-white"
-        style={{ backgroundColor: '#' + color }}
+        style={{ backgroundColor: '#' + dropFields[props.id] }}
         onDragOver={(event) => onDragOver(event)}
         onDrop={(event) => onDrop(event)}
       >
-        {color !== defaultTheme['default'] && color}
+        {dropFields[props.id] !== defaultTheme['default'] &&
+          dropFields[props.id]}
       </div>
       <div className="">
         {colorDropped && (
           <button
-            className="absolute -right-2 -top-2 p-1 w-10 h-10 border rounded-full hidden transition-all ease-in-out delay-500 group-hover:block"
+            className="bg-white absolute -right-2 -top-2 p-1 w-10 h-10 text-center border rounded-full hidden transition-all ease-in-out delay-500 group-hover:block"
             onClick={(event) => onClickRemoveColor(event)}
             style={{
-              backgroundColor: '#' + theme.bg,
-              borderColor: '#' + theme.primary,
               color: '#' + theme.accent1,
+              borderColor: '#' + theme.accent2,
             }}
           >
             X
